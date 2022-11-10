@@ -1,0 +1,48 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: http-echo-virtual-service
+spec:
+  gateways:
+  - platform/default-gateway
+  hosts:
+  - http-echo.k8s.kieranbamforth.me
+  http:
+  - name: default
+    route:
+    - destination:
+        host: http-echo-service.apps.svc.cluster.local
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-echo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echo-server
+  template:
+    metadata:
+      labels:
+        app: echo-server
+    spec:
+      containers:
+        - name: echo-server
+          image: hashicorp/http-echo
+          imagePullPolicy: IfNotPresent
+          args:
+            - -listen=:8080
+            - -text=Echo!
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-echo-service
+spec:
+  selector:
+    app: echo-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

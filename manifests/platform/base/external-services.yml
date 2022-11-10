@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: platform
+spec:
+  type: ExternalName
+  externalName: db-mysql-lon1-54933-do-user-2006419-0.b.db.ondigitalocean.com
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 25060
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: platform
+spec:
+  type: ExternalName
+  externalName: ad0b6998a8e849a9b88b28818a4fc08c.europe-west2.gcp.elastic-cloud.com
+  ports:
+  - name: elasticsearch
+    protocol: TCP
+    port: 9200
+    targetPort: 9243

@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: istio-operator
+  name: istio-operator
+spec:
+  template:
+    spec:
+      containers:
+        - name: istio-operator
+          env:
+            - name: WATCH_NAMESPACE
+              value: platform
+            - name: LEADER_ELECTION_NAMESPACE
+              value: platform
